@@ -1,0 +1,11 @@
+version: '3'
+services:
+  sismor-base:
+    image: clearlinux/golang
+    volumes:
+      - ./:/src/sismor-base
+    working_dir: /src/sismor-base
+    ports:
+      - "8080:8080"
+    command:
+      - ./sismor-base
