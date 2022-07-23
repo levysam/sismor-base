@@ -10,6 +10,7 @@ func setupRouter() *gin.Engine {
 
 	routes.Health(r)
 	routes.Users(r)
+	routes.Auth(r)
 
 	return r
 }
