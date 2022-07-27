@@ -1,12 +1,12 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
-	auth "github.com/levysam/sismor-base/Auth"
-	"github.com/levysam/sismor-base/middleware"
+	auth "fiber-simple-api/Auth"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func Auth(router *gin.Engine) {
-	router.POST("/login", auth.Login)
-	router.POST("/logout", middleware.TokenAuthMiddleware(), auth.Logout)
+func Auth(router *fiber.App) {
+	router.Post("/login", auth.Login)
+	// router.POST("/logout", middleware.TokenAuthMiddleware(), auth.Logout)
 }

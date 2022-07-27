@@ -1,8 +1,9 @@
 package users
 
 import (
+	database "fiber-simple-api/database"
+
 	_ "github.com/go-sql-driver/mysql"
-	database "github.com/levysam/sismor-base/database"
 )
 
 var db = database.NewDb()
@@ -39,7 +40,7 @@ func GetUsers() ([]User, error) {
 	return users, nil
 }
 
-func GetUser(id int64) (User, error) {
+func GetUser(id int) (User, error) {
 	user := User{}
 	row := db.QueryRow(`select id, name, email, password, created_at, updated_at from rodacoop.users where id = ? limit 1`, id)
 	row.Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.Created_at, &user.Updated_at)

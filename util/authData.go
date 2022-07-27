@@ -3,9 +3,9 @@ package util
 import (
 	"strconv"
 
-	model "github.com/levysam/sismor-base/Domains/Users"
+	model "fiber-simple-api/Domains/Users"
 
-	db "github.com/levysam/sismor-base/database"
+	db "fiber-simple-api/database"
 )
 
 //FetchAuth load the user id cached in redis

@@ -1,13 +1,9 @@
 package routes
 
-import (
-	"net/http"
+import "github.com/gofiber/fiber/v2"
 
-	"github.com/gin-gonic/gin"
-)
-
-func Health(g *gin.Engine) {
-	g.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "Ok")
+func Health(ctx *fiber.App) {
+	ctx.Get("/ping", func(c *fiber.Ctx) error {
+		return c.SendString("pong")
 	})
 }

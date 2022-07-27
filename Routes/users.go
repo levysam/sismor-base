@@ -1,11 +1,12 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
-	users "github.com/levysam/sismor-base/Domains/Users"
+	users "fiber-simple-api/Domains/Users"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func Users(r *gin.Engine) {
-	r.GET("/usuarios", users.List)
-	r.GET("/user/:id", users.Detail)
+func Users(r *fiber.App) {
+	r.Get("/usuarios", users.List)
+	r.Get("/user/:id", users.Detail)
 }

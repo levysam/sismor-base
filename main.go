@@ -1,21 +1,20 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	routes "github.com/levysam/sismor-base/Routes"
+	routes "fiber-simple-api/Routes"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func setupRouter() *gin.Engine {
-	r := gin.Default()
-
+func setupRouter() *fiber.App {
+	r := fiber.New()
+	routes.Auth(r)
 	routes.Health(r)
 	routes.Users(r)
-	routes.Auth(r)
-
 	return r
 }
 
 func main() {
 	r := setupRouter()
-	r.Run(":8080")
+	r.Listen(":8080")
 }

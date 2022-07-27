@@ -2,32 +2,34 @@ package users
 
 import (
 	"log"
-	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
-func List(ctx *gin.Context) {
+func List(ctx *fiber.Ctx) error {
 	users, err := GetUsers()
 	if err != nil {
 		log.Println(err)
-		ctx.JSON(http.StatusNotFound, err)
-		return
+		ctx.JSON(err)
+		return err
 	}
-	ctx.JSON(http.StatusOK, users)
+	ctx.JSON(users)
+	return nil
 }
 
-func Detail(ctx *gin.Context) {
-	type ids struct {
-		Id int64 `uri:"id" binding:"required,uuid"`
-	}
-	var stringId ids
-	ctx.ShouldBindUri(&stringId)
-	user, err := GetUser(stringId.Id)
+func Detail(ctx *fiber.Ctx) error {
+	id, err := ctx.ParamsInt("id")
 	if err != nil {
 		log.Println(err)
-		ctx.JSON(http.StatusNotFound, err)
-		return
+		ctx.JSON(err)
+		return err
 	}
-	ctx.JSON(http.StatusOK, user)
+	user, err := GetUser(id)
+	if err != nil {
+		log.Println(err)
+		ctx.JSON(err)
+		return err
+	}
+	ctx.JSON(user)
+	return nil
 }

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	model "github.com/levysam/sismor-base/Domains/Users"
+	model "fiber-simple-api/Domains/Users"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/twinj/uuid"
