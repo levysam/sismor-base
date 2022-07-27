@@ -1,12 +1,11 @@
 package routes
 
 import (
-	auth "fiber-simple-api/Auth"
+	auth "fiber-simple-api/Domains/Auth"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func Auth(router *fiber.App) {
 	router.Post("/login", auth.Login)
-	// router.POST("/logout", middleware.TokenAuthMiddleware(), auth.Logout)
 }
