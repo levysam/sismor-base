@@ -9,3 +9,29 @@ services:
       - "8080:8080"
     command:
       - ./sismor-base
+
+  # redis:
+  #       image: redis:alpine
+  #       container_name: redis
+  #       restart: unless-stopped
+  #       ports:
+  #           - "6379:6379"
+
+  # mysql:
+  #       image: mysql:latest
+  #       container_name: mysql
+  #       restart: unless-stopped
+  #       environment:
+  #           MYSQL_ROOT_PASSWORD: root
+  #           MYSQL_DATABASE: rodacoop
+  #       ports:
+  #           - "3306:3306"
+  #       depends_on:
+  #           - redis
+  #       volumes:
+  #           - ./storage/mysql:/var/lib/mysql
+
+
+networks:
+  default:
+    name: app-network

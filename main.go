@@ -1,7 +1,8 @@
 package main
 
 import (
-	routes "fiber-simple-api/Routes"
+	"fiber-simple-api/routes"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,5 +17,5 @@ func setupRouter() *fiber.App {
 
 func main() {
 	r := setupRouter()
-	r.Listen(":8080")
+	log.Fatal(r.Listen(":8080"))
 }
