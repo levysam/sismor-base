@@ -1,12 +1,8 @@
 package users
 
 import (
-	database "fiber-simple-api/database"
-
 	_ "github.com/go-sql-driver/mysql"
 )
-
-var db = database.NewDb()
 
 type User struct {
 	Id         int64
@@ -15,33 +11,4 @@ type User struct {
 	Password   string
 	Created_at string
 	Updated_at string
-}
-
-func GetUsers() (*[]User, error) {
-	users := new([]User)
-	err := db.Select(users, `select id, name, email, password,created_at, updated_at from rodacoop.users`)
-	if err != nil {
-		return nil, err
-	}
-	return users, nil
-}
-
-func GetUser(id int) (*User, error) {
-	user := new(User)
-	row := db.QueryRow(`select id, name, email, password, created_at, updated_at from rodacoop.users where id = ? limit 1`, id)
-	err := row.Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.Created_at, &user.Updated_at)
-	if err != nil {
-		return user, err
-	}
-	return user, err
-}
-
-func GetUserByEmail(email string) (*User, error) {
-	user := new(User)
-	row := db.QueryRow(`select id, name, email, password, created_at, updated_at from rodacoop.users where email = ? limit 1`, email)
-	err := row.Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.Created_at, &user.Updated_at)
-	if err != nil {
-		return nil, err
-	}
-	return user, err
 }

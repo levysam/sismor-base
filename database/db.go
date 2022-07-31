@@ -1,17 +1,19 @@
 package database
 
 import (
-	"log"
-
-	"github.com/jmoiron/sqlx"
+	"database/sql"
 )
 
-var DB *sqlx.DB
+type Database struct {
+	*sql.DB
+}
 
-func NewDb() *sqlx.DB {
-	db, err := sqlx.Open("mysql", "root:root@tcp(localhost:3306)/rodacoop")
+func NewDb(dsn string) (*Database, error) {
+	dbSql, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return db
+	return &Database{
+		dbSql,
+	}, nil
 }

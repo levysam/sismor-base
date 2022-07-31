@@ -6,8 +6,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func List(ctx *fiber.Ctx) error {
-	users, err := GetUsers()
+type UsersController struct {
+	respository *UsersRepository
+}
+
+func NewUsersController(respository *UsersRepository) *UsersController {
+	return &UsersController{
+		respository: respository,
+	}
+}
+
+func (controller UsersController) List(ctx *fiber.Ctx) error {
+	users, err := controller.respository.GetUsers()
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -17,14 +27,14 @@ func List(ctx *fiber.Ctx) error {
 	return nil
 }
 
-func Detail(ctx *fiber.Ctx) error {
+func (controller UsersController) Detail(ctx *fiber.Ctx) error {
 	id, err := ctx.ParamsInt("id")
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
 		return err
 	}
-	user, err := GetUser(id)
+	user, err := controller.respository.GetUser(id)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
