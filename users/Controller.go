@@ -43,3 +43,16 @@ func (controller UsersController) Detail(ctx *fiber.Ctx) error {
 	ctx.JSON(user)
 	return nil
 }
+
+func (controller UsersController) Insert(ctx *fiber.Ctx) error {
+	userToInsert := new(User)
+	err := ctx.BodyParser(userToInsert)
+	if err != nil {
+		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
+	err = controller.respository.InsertUser(userToInsert)
+	if err != nil {
+		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
+	}
+	return nil
+}
