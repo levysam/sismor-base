@@ -8,8 +8,10 @@ type Database struct {
 	*sql.DB
 }
 
+var Open = sql.Open
+
 func NewDb(dsn string) (*Database, error) {
-	dbSql, err := sql.Open("mysql", dsn)
+	dbSql, err := Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
