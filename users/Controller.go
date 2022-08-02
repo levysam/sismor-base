@@ -56,3 +56,20 @@ func (controller UsersController) Insert(ctx *fiber.Ctx) error {
 	}
 	return nil
 }
+
+func (controller UsersController) Delete(ctx *fiber.Ctx) error {
+	id, err := ctx.ParamsInt("id")
+	if err != nil {
+		log.Println(err)
+		ctx.JSON(err)
+		return err
+	}
+	err = controller.respository.DeleteUser(id)
+	if err != nil {
+		log.Println(err)
+		ctx.JSON(err)
+		return err
+	}
+	ctx.Status(fiber.StatusOK)
+	return nil
+}

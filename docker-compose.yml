@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     command:
-      - ./sismor-base
+      - ./fiber-simple-api
 
   # redis:
   #       image: redis:alpine
@@ -17,19 +17,17 @@ services:
   #       ports:
   #           - "6379:6379"
 
-  # mysql:
-  #       image: mysql:latest
-  #       container_name: mysql
-  #       restart: unless-stopped
-  #       environment:
-  #           MYSQL_ROOT_PASSWORD: root
-  #           MYSQL_DATABASE: rodacoop
-  #       ports:
-  #           - "3306:3306"
-  #       depends_on:
-  #           - redis
-  #       volumes:
-  #           - ./storage/mysql:/var/lib/mysql
+  mysql:
+        image: mysql:latest
+        container_name: mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./storage/mysql:/var/lib/mysql
 
 
 networks:

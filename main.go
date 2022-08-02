@@ -48,5 +48,5 @@ func main() {
 	app := NewApp()
 	usersController := app.getUsersController()
 	app.usersRouter(fiber, usersController)
-	log.Fatal(fiber.Listen(":3000"))
+	log.Fatal(fiber.Listen(":8080"))
 }
