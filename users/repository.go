@@ -89,3 +89,25 @@ func (repository *UsersRepository) DeleteUser(Id int) error {
 	}
 	return nil
 }
+
+func (repository *UsersRepository) UpdateUser(id int, UserData *User) error {
+	tx, err := repository.database.Begin()
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec(
+		"UPDATE users SET name=?, email=?, password=? WHERE id=?",
+		UserData.Name,
+		UserData.Email,
+		UserData.Password,
+		id,
+	)
+	if err != nil {
+		return err
+	}
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+	return nil
+}

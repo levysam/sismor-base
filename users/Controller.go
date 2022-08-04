@@ -16,7 +16,7 @@ func NewUsersController(respository *UsersRepository) *UsersController {
 	}
 }
 
-func (controller UsersController) List(ctx *fiber.Ctx) error {
+func (controller *UsersController) List(ctx *fiber.Ctx) error {
 	users, err := controller.respository.GetUsers()
 	if err != nil {
 		log.Println(err)
@@ -27,7 +27,7 @@ func (controller UsersController) List(ctx *fiber.Ctx) error {
 	return nil
 }
 
-func (controller UsersController) Detail(ctx *fiber.Ctx) error {
+func (controller *UsersController) Detail(ctx *fiber.Ctx) error {
 	id, err := ctx.ParamsInt("id")
 	if err != nil {
 		log.Println(err)
@@ -44,7 +44,7 @@ func (controller UsersController) Detail(ctx *fiber.Ctx) error {
 	return nil
 }
 
-func (controller UsersController) Insert(ctx *fiber.Ctx) error {
+func (controller *UsersController) Insert(ctx *fiber.Ctx) error {
 	userToInsert := new(User)
 	err := ctx.BodyParser(userToInsert)
 	if err != nil {
@@ -57,7 +57,7 @@ func (controller UsersController) Insert(ctx *fiber.Ctx) error {
 	return nil
 }
 
-func (controller UsersController) Delete(ctx *fiber.Ctx) error {
+func (controller *UsersController) Delete(ctx *fiber.Ctx) error {
 	id, err := ctx.ParamsInt("id")
 	if err != nil {
 		log.Println(err)
@@ -71,5 +71,22 @@ func (controller UsersController) Delete(ctx *fiber.Ctx) error {
 		return err
 	}
 	ctx.Status(fiber.StatusOK)
+	return nil
+}
+
+func (controller *UsersController) Update(ctx *fiber.Ctx) error {
+	id, err := ctx.ParamsInt("id")
+	if err != nil {
+		return err
+	}
+	userData := new(User)
+	err = ctx.BodyParser(userData)
+	if err != nil {
+		return err
+	}
+	err = controller.respository.UpdateUser(id, userData)
+	if err != nil {
+		return err
+	}
 	return nil
 }

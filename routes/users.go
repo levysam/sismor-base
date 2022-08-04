@@ -23,5 +23,6 @@ func (router UsersRouter) Users() {
 	usersGroup.Get("/", router.Controller.List)
 	usersGroup.Get("/:id", router.Controller.Detail)
 	usersGroup.Post("/", router.Controller.Insert)
+	usersGroup.Put("/:id", router.Controller.Update)
 	usersGroup.Delete("/:id", router.Controller.Delete)
 }
