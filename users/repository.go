@@ -1,6 +1,10 @@
 package users
 
-import "fiber-simple-api/database"
+import (
+	"encoding/json"
+	"fiber-simple-api/database"
+	"strings"
+)
 
 type UsersRepository struct {
 	database *database.Database
@@ -95,12 +99,11 @@ func (repository *UsersRepository) UpdateUser(id int, UserData *User) error {
 	if err != nil {
 		return err
 	}
+	statement, data := createQuery(*UserData)
+	data = append(data, id)
 	_, err = tx.Exec(
-		"UPDATE users SET name=?, email=?, password=? WHERE id=?",
-		UserData.Name,
-		UserData.Email,
-		UserData.Password,
-		id,
+		"UPDATE users SET "+statement+" WHERE id=?",
+		data...,
 	)
 	if err != nil {
 		return err
@@ -110,4 +113,17 @@ func (repository *UsersRepository) UpdateUser(id int, UserData *User) error {
 		return err
 	}
 	return nil
+}
+
+func createQuery(UserData interface{}) (string, []interface{}) {
+	data := []interface{}{}
+	JsonData, _ := json.Marshal(UserData)
+	var MapUser map[string]interface{}
+	json.Unmarshal(JsonData, &MapUser)
+	StatmentString := []string{}
+	for key, value := range MapUser {
+		StatmentString = append(StatmentString, key+" = ?")
+		data = append(data, value)
+	}
+	return strings.Join(StatmentString, ", "), data
 }

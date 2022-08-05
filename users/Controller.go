@@ -80,12 +80,20 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 		return err
 	}
 	userData := new(User)
-	err = ctx.BodyParser(userData)
+	// oldUser, err := controller.respository.GetUser(id)
 	if err != nil {
+		ctx.JSON(err)
 		return err
 	}
+	err = ctx.BodyParser(userData)
+	if err != nil {
+		ctx.JSON(err)
+		return err
+	}
+
 	err = controller.respository.UpdateUser(id, userData)
 	if err != nil {
+		ctx.JSON(err)
 		return err
 	}
 	return nil

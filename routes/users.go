@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fiber-simple-api/users"
+	"fmt"
 )
 
 type UsersRouter struct {
@@ -19,10 +20,11 @@ func NewUsersRouter(baseRouter *BaseRouter, controller *users.UsersController) *
 }
 
 func (router UsersRouter) Users() {
+	fmt.Println("passando por essa rota")
 	usersGroup := router.Base.Fiber.Group("/users")
 	usersGroup.Get("/", router.Controller.List)
 	usersGroup.Get("/:id", router.Controller.Detail)
 	usersGroup.Post("/", router.Controller.Insert)
-	usersGroup.Put("/:id", router.Controller.Update)
+	usersGroup.Patch("/:id", router.Controller.Update)
 	usersGroup.Delete("/:id", router.Controller.Delete)
 }
