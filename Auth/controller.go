@@ -1,9 +1,7 @@
 package auth
 
 import (
-	"fiber-simple-api/services"
-	localSession "fiber-simple-api/services/sessions"
-	"fiber-simple-api/users"
+	"fiber-simple-api/domains/users"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -23,15 +21,15 @@ func Login(c *fiber.Ctx, repository *users.UsersRepository) error {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
 
-	token, err := services.CreateJwtToken(user.Id)
-	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
+	// token, err := services.CreateJwtToken(int64(model.Users.ID))
+	// if err != nil {
+	// 	return c.SendStatus(fiber.StatusInternalServerError)
+	// }
 
-	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-	localSession.Set(token.AccessToken, []byte("1"), token.AtExpires)
-	c.Status(fiber.StatusAccepted).JSON(fiber.Map{"AccessToken": token.AccessToken, "RefreshToken": token.RefreshToken})
+	// if err != nil {
+	// 	return c.SendStatus(fiber.StatusInternalServerError)
+	// }
+	// localSession.Set(token.AccessToken, []byte("1"), token.AtExpires)
+	// c.Status(fiber.StatusAccepted).JSON(fiber.Map{"AccessToken": token.AccessToken, "RefreshToken": token.RefreshToken})
 	return nil
 }

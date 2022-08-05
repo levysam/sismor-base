@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"fiber-simple-api/users"
+	"fiber-simple-api/domains/users"
 	"fmt"
 )
 

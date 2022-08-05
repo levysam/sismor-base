@@ -2,8 +2,8 @@ package main
 
 import (
 	"fiber-simple-api/database"
+	"fiber-simple-api/domains/users"
 	"fiber-simple-api/routes"
-	"fiber-simple-api/users"
 	"fmt"
 	"log"
 	"os"

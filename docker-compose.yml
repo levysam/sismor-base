@@ -1,7 +1,7 @@
 version: '3'
 services:
   sismor-base:
-    image: clearlinux/golang
+    build: .
     volumes:
       - ./:/src/sismor-base
     working_dir: /src/sismor-base
