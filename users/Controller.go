@@ -1,6 +1,7 @@
 package users
 
 import (
+	model "fiber-simple-api/users/type"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -45,7 +46,7 @@ func (controller *UsersController) Detail(ctx *fiber.Ctx) error {
 }
 
 func (controller *UsersController) Insert(ctx *fiber.Ctx) error {
-	userToInsert := new(User)
+	userToInsert := new(model.Users)
 	err := ctx.BodyParser(userToInsert)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
