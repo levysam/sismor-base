@@ -8,8 +8,6 @@ RUN go install github.com/cosmtrek/air@latest
 
 WORKDIR /src/sismor-base
 
-# RUN go get
-
 RUN air init
 
 CMD ["air"]

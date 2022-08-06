@@ -1,10 +1,12 @@
 package users
 
 import (
-	"encoding/json"
 	"fiber-simple-api/database"
 	"fiber-simple-api/domains/sismor/model"
-	"strings"
+	"fiber-simple-api/domains/sismor/table"
+	"fmt"
+
+	"github.com/go-jet/jet/v2/mysql"
 )
 
 type UsersRepository struct {
@@ -35,13 +37,11 @@ func (repository *UsersRepository) GetUsers() ([]*model.Users, error) {
 	return users, nil
 }
 
-func (repository *UsersRepository) GetUser(id int) (*model.Users, error) {
+func (repository *UsersRepository) GetUser(id int64) (*model.Users, error) {
 	user := new(model.Users)
-	row := repository.database.QueryRow(`select id, name, email from users where id = ? limit 1`, id)
-	err := row.Scan(&user.ID, &user.Name, &user.Email)
-	if err != nil {
-		return user, err
-	}
+	err := table.Users.SELECT(table.Users.AllColumns).
+		WHERE(table.Users.ID.EQ(mysql.Int(id))).
+		Query(repository.database, user)
 	return user, err
 }
 
@@ -56,78 +56,25 @@ func (repository *UsersRepository) GetUserByEmail(email string) (*model.Users, e
 }
 
 func (repository *UsersRepository) InsertUser(user *model.Users) error {
-	//fmt.Println(table.Users.INSERT(Users.ID, Users.Name).VALUES(user).Exec(repository.database))
-	return nil
-	// tx, err := repository.database.Begin()
-	// if err != nil {
-	// 	return err
-	// }
-	// _, err = tx.Exec(
-	// 	"insert into users (name, email, password) values (?, ?, ?)",
-	// 	user.Name,
-	// 	user.Email,
-	// 	user.Password,
-	// )
-	// if err != nil {
-	// 	return err
-	// }
-	// err = tx.Commit()
-	// if err != nil {
-	// 	return err
-	// }
-	// return nil
+	_, err := table.Users.
+		INSERT(table.Users.Name, table.Users.Password, table.Users.Email).
+		VALUES(user.Name, user.Password, user.Email).
+		Exec(repository.database)
+	return err
 }
 
-func (repository *UsersRepository) DeleteUser(Id int) error {
-	tx, err := repository.database.Begin()
-	if err != nil {
-		return err
-	}
-	_, err = tx.Exec(
-		"delete from users where id = ?",
-		Id,
-	)
-	if err != nil {
-		return err
-	}
-	err = tx.Commit()
-	if err != nil {
-		return err
-	}
-	return nil
+func (repository *UsersRepository) DeleteUser(Id int64) error {
+	_, err := table.Users.DELETE().
+		WHERE(table.Users.ID.EQ(mysql.Int(Id))).
+		Exec(repository.database)
+	return err
 }
 
-func (repository *UsersRepository) UpdateUser(id int, UserData *model.Users) error {
-	// Users.INSERT(Users.ID, Users.Name).VALUES(UserData)
-	tx, err := repository.database.Begin()
-	if err != nil {
-		return err
-	}
-	statement, data := createQuery(*UserData)
-	data = append(data, id)
-	_, err = tx.Exec(
-		"UPDATE users SET "+statement+" WHERE id=?",
-		data...,
-	)
-	if err != nil {
-		return err
-	}
-	err = tx.Commit()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func createQuery(UserData interface{}) (string, []interface{}) {
-	data := []interface{}{}
-	JsonData, _ := json.Marshal(UserData)
-	var MapUser map[string]interface{}
-	json.Unmarshal(JsonData, &MapUser)
-	StatmentString := []string{}
-	for key, value := range MapUser {
-		StatmentString = append(StatmentString, key+" = ?")
-		data = append(data, value)
-	}
-	return strings.Join(StatmentString, ", "), data
+func (repository *UsersRepository) UpdateUser(id int64, UserData *model.Users) error {
+	statement := table.Users.UPDATE(table.Users.Email, table.Users.Name, table.Users.Password).
+		SET(UserData.Email, UserData.Name, UserData.Password).
+		WHERE(table.Users.ID.EQ(mysql.Int(id)))
+	fmt.Println(statement.Sql())
+	_, err := statement.Exec(repository.database)
+	return err
 }

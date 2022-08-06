@@ -29,13 +29,16 @@ func (controller *UsersController) List(ctx *fiber.Ctx) error {
 }
 
 func (controller *UsersController) Detail(ctx *fiber.Ctx) error {
-	id, err := ctx.ParamsInt("id")
+	params := struct {
+		ID int64 `params:"id"`
+	}{}
+	err := ctx.ParamsParser(&params)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
 		return err
 	}
-	user, err := controller.respository.GetUser(id)
+	user, err := controller.respository.GetUser(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -59,13 +62,16 @@ func (controller *UsersController) Insert(ctx *fiber.Ctx) error {
 }
 
 func (controller *UsersController) Delete(ctx *fiber.Ctx) error {
-	id, err := ctx.ParamsInt("id")
+	params := struct {
+		ID int64 `params:"id"`
+	}{}
+	err := ctx.ParamsParser(&params)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
 		return err
 	}
-	err = controller.respository.DeleteUser(id)
+	err = controller.respository.DeleteUser(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -76,7 +82,10 @@ func (controller *UsersController) Delete(ctx *fiber.Ctx) error {
 }
 
 func (controller *UsersController) Update(ctx *fiber.Ctx) error {
-	id, err := ctx.ParamsInt("id")
+	params := struct {
+		ID int64 `params:"id"`
+	}{}
+	err := ctx.ParamsParser(&params)
 	if err != nil {
 		return err
 	}
@@ -92,7 +101,7 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	err = controller.respository.UpdateUser(id, userData)
+	err = controller.respository.UpdateUser(params.ID, userData)
 	if err != nil {
 		ctx.JSON(err)
 		return err
