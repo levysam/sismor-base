@@ -1,11 +1,10 @@
-package users_test
+package users
 
 import (
 	"reflect"
 	"testing"
 
 	"fiber-simple-api/database"
-	"fiber-simple-api/domains/users"
 
 	"github.com/DATA-DOG/go-sqlmock"
 )
@@ -18,7 +17,7 @@ func TestNewUsersRepository(t *testing.T) {
 	databaseMock := &database.Database{
 		mockDB,
 	}
-	repository := users.NewUsersRepository(databaseMock)
+	repository := NewUsersRepository(databaseMock)
 	if reflect.TypeOf(repository).String() != "*users.UsersRepository" {
 		t.Errorf("expecting *users.UsersRepository type but got %v", reflect.TypeOf(repository))
 	}

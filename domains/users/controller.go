@@ -7,24 +7,40 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type UsersController struct {
-	respository *UsersRepository
+var UsersControllerVar usersControllerInterface
+
+func init() {
+	UsersControllerVar = &UsersController{}
 }
 
-func NewUsersController(respository *UsersRepository) *UsersController {
+type UsersController struct {
+	respository UsersRepositoryInterface
+	response    interface{}
+}
+
+type usersControllerInterface interface {
+	List(ctx *fiber.Ctx) error
+	Detail(ctx *fiber.Ctx) error
+	Insert(ctx *fiber.Ctx) error
+	Delete(ctx *fiber.Ctx) error
+	Update(ctx *fiber.Ctx) error
+}
+
+func NewUsersController(respository UsersRepositoryInterface) *UsersController {
 	return &UsersController{
 		respository: respository,
 	}
 }
 
 func (controller *UsersController) List(ctx *fiber.Ctx) error {
-	users, err := controller.respository.GetUsers()
+	var err error
+	controller.response, err = controller.respository.GetUsers()
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
 		return err
 	}
-	ctx.JSON(users)
+	ctx.JSON(controller.response)
 	return nil
 }
 

@@ -20,16 +20,5 @@ func Login(c *fiber.Ctx, repository *users.UsersRepository) error {
 	if loginForm.Password != user.Password {
 		return c.SendStatus(fiber.StatusUnauthorized)
 	}
-
-	// token, err := services.CreateJwtToken(int64(model.Users.ID))
-	// if err != nil {
-	// 	return c.SendStatus(fiber.StatusInternalServerError)
-	// }
-
-	// if err != nil {
-	// 	return c.SendStatus(fiber.StatusInternalServerError)
-	// }
-	// localSession.Set(token.AccessToken, []byte("1"), token.AtExpires)
-	// c.Status(fiber.StatusAccepted).JSON(fiber.Map{"AccessToken": token.AccessToken, "RefreshToken": token.RefreshToken})
 	return nil
 }

@@ -9,14 +9,30 @@ import (
 	"github.com/go-jet/jet/v2/mysql"
 )
 
+var UsersRepositoryVar UsersRepositoryInterface
+
 type UsersRepository struct {
 	database *database.Database
+}
+
+type UsersRepositoryInterface interface {
+	GetUsers() ([]*model.Users, error)
+	GetUser(id int64) (*model.Users, error)
+	GetUserByEmail(email string) (*model.Users, error)
+	InsertUser(user *model.Users) error
+	DeleteUser(Id int64) error
+	UpdateUser(id int64, UserData *model.Users) error
+}
+
+func init() {
+	UsersRepositoryVar = &UsersRepository{}
 }
 
 func NewUsersRepository(database *database.Database) *UsersRepository {
 	return &UsersRepository{
 		database: database,
 	}
+
 }
 
 func (repository *UsersRepository) GetUsers() ([]*model.Users, error) {
