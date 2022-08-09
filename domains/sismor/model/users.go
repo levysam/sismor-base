@@ -9,7 +9,7 @@ package model
 
 type Users struct {
 	ID       int32
-	Name     *string
+	Name     string
 	Password string
-	Email    *string
+	Email    string
 }

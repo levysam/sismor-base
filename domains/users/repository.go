@@ -87,8 +87,8 @@ func (repository *UsersRepository) DeleteUser(Id int64) error {
 }
 
 func (repository *UsersRepository) UpdateUser(id int64, UserData *model.Users) error {
-	statement := table.Users.UPDATE(table.Users.Email, table.Users.Name, table.Users.Password).
-		SET(UserData.Email, UserData.Name, UserData.Password).
+	statement := table.Users.UPDATE(table.Users.MutableColumns).
+		MODEL(UserData).
 		WHERE(table.Users.ID.EQ(mysql.Int(id)))
 	fmt.Println(statement.Sql())
 	_, err := statement.Exec(repository.database)

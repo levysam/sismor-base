@@ -36,7 +36,6 @@ func (controller *UsersController) List(ctx *fiber.Ctx) error {
 	var err error
 	controller.response, err = controller.respository.GetUsers()
 	if err != nil {
-		log.Println(err)
 		ctx.JSON(err)
 		return err
 	}
@@ -105,7 +104,8 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	userData := new(model.Users)
+
+	userData := &model.Users{}
 	// oldUser, err := controller.respository.GetUser(id)
 	if err != nil {
 		ctx.JSON(err)
