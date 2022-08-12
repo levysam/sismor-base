@@ -1,15 +1,19 @@
 package routes
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"fiber-simple-api/database"
+	"fiber-simple-api/domains/users"
 )
 
-type BaseRouter struct {
-	Fiber *fiber.App
+type BaseRouter struct{}
+
+func NewBaseRouter() *BaseRouter {
+	return &BaseRouter{}
 }
 
-func NewBaseRouter(fiber *fiber.App) *BaseRouter {
-	return &BaseRouter{
-		Fiber: fiber,
-	}
+func (app *BaseRouter) GetUsersController(Database *database.Database) *users.UsersController {
+	repository := users.NewUsersRepository(Database)
+	users := users.NewUsersController(repository)
+
+	return users
 }

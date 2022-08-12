@@ -2,7 +2,6 @@ package main
 
 import (
 	"fiber-simple-api/database"
-	"fiber-simple-api/domains/users"
 	"fiber-simple-api/routes"
 	"fmt"
 	"log"
@@ -13,7 +12,8 @@ import (
 )
 
 type BaseApp struct {
-	Database *database.Database
+	Database  *database.Database
+	FiberBase *fiber.App
 }
 
 func NewApp() *BaseApp {
@@ -25,28 +25,23 @@ func NewApp() *BaseApp {
 	dbName := os.Getenv("DB_DATABASE")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, connection, port, dbName)
 	db, err := database.NewDb(dsn)
+	app := fiber.New()
 	if err != nil {
 		log.Fatal(err)
 	}
 	return &BaseApp{
-		Database: db,
+		Database:  db,
+		FiberBase: app,
 	}
 }
 
-func (app BaseApp) usersRouter(fiber *fiber.App, controller *users.UsersController) *routes.BaseRouter {
-	router := routes.NewBaseRouter(fiber)
-	return routes.NewUsersRouter(router, controller)
-}
-
-func (app BaseApp) getUsersController() *users.UsersController {
-	repository := users.NewUsersRepository(app.Database)
-	return users.NewUsersController(repository)
-}
-
 func main() {
-	fiber := fiber.New()
 	app := NewApp()
-	usersController := app.getUsersController()
-	app.usersRouter(fiber, usersController)
-	log.Fatal(fiber.Listen(":8080"))
+	//app.RouterBase.GetUsersController(app.Database)
+	usersFactory := routes.NewBaseRouterV2("usuarios")
+	userRoute := usersFactory.Route()
+	usr := userRoute.MakeRouteProtected(app.Database)
+	usr.ListenRoutes(app.FiberBase)
+	//printShoeDetails(nikeShoe)
+	log.Fatal(app.FiberBase.Listen(":8080"))
 }

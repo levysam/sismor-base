@@ -19,10 +19,10 @@ func NewUsersRouter(baseRouter *BaseRouter, controller *users.UsersController) *
 }
 
 func (router UsersRouter) Users() {
-	usersGroup := router.Base.Fiber.Group("/users")
-	usersGroup.Get("/", router.Controller.List)
-	usersGroup.Get("/:id", router.Controller.Detail)
-	usersGroup.Post("/", router.Controller.Insert)
-	usersGroup.Patch("/:id", router.Controller.Update)
-	usersGroup.Delete("/:id", router.Controller.Delete)
+	// usersGroup := router.Base.Fiber.Group("/users")
+	// usersGroup.Get("/", router.Controller.List)
+	// usersGroup.Get("/:id", router.Controller.Detail)
+	// usersGroup.Post("/", router.Controller.Insert)
+	// usersGroup.Patch("/:id", router.Controller.Update)
+	// usersGroup.Delete("/:id", router.Controller.Delete)
 }
