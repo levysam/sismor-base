@@ -1,19 +1,19 @@
-package routes
+package users
 
 import (
 	"fiber-simple-api/database"
 	"fiber-simple-api/domains/users"
 )
 
-type usuarios struct {
+type Usuarios struct {
 }
 
-func (u *usuarios) MakeRouteProtected(Database *database.Database) iProtectedRoute {
+func (u *Usuarios) MakeRouteProtected(Database *database.Database) IProtectedRoute {
 	repository := users.NewUsersRepository(Database)
-	return &usuariosProtectedRoute{
+	return &UsuariosProtectedRoute{
 		ProtectedRoute: ProtectedRoute{
-			repository: repository,
-			controller: users.NewUsersController(repository),
+			Repository: repository,
+			Controller: users.NewUsersController(repository),
 		},
 	}
 }

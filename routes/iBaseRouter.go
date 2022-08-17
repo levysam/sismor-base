@@ -1,23 +1,26 @@
 package routes
 
-import "fiber-simple-api/database"
+import (
+	"fiber-simple-api/database"
+	"fiber-simple-api/routes/users"
+)
 
 type iBaseRouter interface {
-	MakeRouteProtected(Database *database.Database) iProtectedRoute
+	MakeRouteProtected(Database *database.Database) users.IProtectedRoute
 	//MakeRoutePublic() iPublicRoute
 }
 
-type BaseRouterV2 struct {
+type BaseRouter struct {
 	route string
 }
 
-func NewBaseRouterV2(name string) *BaseRouterV2 {
-	return &BaseRouterV2{route: name}
+func NewBaseRouter(name string) *BaseRouter {
+	return &BaseRouter{route: name}
 }
 
-func (c BaseRouterV2) Route() iBaseRouter {
+func (c BaseRouter) Route() iBaseRouter {
 	if c.route == "usuarios" {
-		return &usuarios{}
+		return &users.Usuarios{}
 	}
 	// if c.route == "health" {
 	// 	return &nike{}

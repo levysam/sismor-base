@@ -1,4 +1,4 @@
-package routes
+package users
 
 import (
 	"fiber-simple-api/domains/users"
@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type iProtectedRoute interface {
+type IProtectedRoute interface {
 	SetController(controller *users.UsersController)
 	SetRepository(repository *users.UsersRepository)
 	GetController() *users.UsersController
@@ -15,6 +15,6 @@ type iProtectedRoute interface {
 }
 
 type ProtectedRoute struct {
-	controller *users.UsersController
-	repository *users.UsersRepository
+	Controller *users.UsersController
+	Repository *users.UsersRepository
 }

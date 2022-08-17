@@ -38,7 +38,7 @@ func NewApp() *BaseApp {
 func main() {
 	app := NewApp()
 	//app.RouterBase.GetUsersController(app.Database)
-	usersFactory := routes.NewBaseRouterV2("usuarios")
+	usersFactory := routes.NewBaseRouter("usuarios")
 	userRoute := usersFactory.Route()
 	usr := userRoute.MakeRouteProtected(app.Database)
 	usr.ListenRoutes(app.FiberBase)

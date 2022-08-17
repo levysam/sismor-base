@@ -15,7 +15,6 @@ func init() {
 
 type UsersController struct {
 	respository UsersRepositoryInterface
-	response    interface{}
 }
 
 type usersControllerInterface interface {
@@ -34,12 +33,12 @@ func NewUsersController(respository UsersRepositoryInterface) *UsersController {
 
 func (controller *UsersController) List(ctx *fiber.Ctx) error {
 	var err error
-	controller.response, err = controller.respository.GetUsers()
+	response, err := controller.respository.GetUsers()
 	if err != nil {
 		ctx.JSON(err)
 		return err
 	}
-	ctx.JSON(controller.response)
+	ctx.JSON(response)
 	return nil
 }
 
