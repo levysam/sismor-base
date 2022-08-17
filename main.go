@@ -38,9 +38,16 @@ func NewApp() *BaseApp {
 func main() {
 	app := NewApp()
 	//app.RouterBase.GetUsersController(app.Database)
-	usersFactory := routes.NewBaseRouterV2("usuarios")
-	userRoute := usersFactory.Route()
-	usr := userRoute.MakeRouteProtected(app.Database)
+	usersFactory := routes.NewBaseRouterV2("usuarios").Route()
+	authFactory := routes.NewBaseRouterV2("auth").Route()
+
+	auth := authFactory.MakeRouteProtected(app.Database)
+	auth.ListenRoutes(app.FiberBase)
+	// JWT Middleware
+	// app.FiberBase.Use(jwtware.New(jwtware.Config{
+	// 	SigningKey: []byte("secret"),
+	// }))
+	usr := usersFactory.MakeRouteProtected(app.Database)
 	usr.ListenRoutes(app.FiberBase)
 	//printShoeDetails(nikeShoe)
 	log.Fatal(app.FiberBase.Listen(":8080"))

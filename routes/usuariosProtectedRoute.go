@@ -13,10 +13,10 @@ type usuariosProtectedRoute struct {
 func (router *usuariosProtectedRoute) ListenRoutes(fiber *fiber.App) {
 	usersGroup := fiber.Group("/users")
 	usersGroup.Get("/", router.ProtectedRoute.controller.List)
-	// usersGroup.Get("/:id", router.Controller.Detail)
-	// usersGroup.Post("/", router.Controller.Insert)
-	// usersGroup.Patch("/:id", router.Controller.Update)
-	// usersGroup.Delete("/:id", router.Controller.Delete)
+	usersGroup.Get("/:id", router.ProtectedRoute.controller.Detail)
+	usersGroup.Post("/", router.ProtectedRoute.controller.Insert)
+	usersGroup.Patch("/:id", router.ProtectedRoute.controller.Update)
+	usersGroup.Delete("/:id", router.ProtectedRoute.controller.Delete)
 }
 
 func (p *ProtectedRoute) SetController(controller *users.UsersController) {

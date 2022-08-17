@@ -16,6 +16,9 @@ func NewBaseRouterV2(name string) *BaseRouterV2 {
 }
 
 func (c BaseRouterV2) Route() iBaseRouter {
+	if c.route == "auth" {
+		return &auth{}
+	}
 	if c.route == "usuarios" {
 		return &usuarios{}
 	}
