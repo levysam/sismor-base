@@ -4,24 +4,16 @@ import (
 	"fiber-simple-api/database"
 	"fiber-simple-api/domains/sismor/model"
 	"fiber-simple-api/domains/sismor/table"
+	"fiber-simple-api/repository"
 	"fmt"
 
 	"github.com/go-jet/jet/v2/mysql"
 )
 
-var UsersRepositoryVar UsersRepositoryInterface
+var UsersRepositoryVar repository.IBaseRepository
 
 type UsersRepository struct {
 	database *database.Database
-}
-
-type UsersRepositoryInterface interface {
-	GetUsers() ([]*model.Users, error)
-	GetUser(id int64) (*model.Users, error)
-	GetUserByEmail(email string) (*model.Users, error)
-	InsertUser(user *model.Users) error
-	DeleteUser(Id int64) error
-	UpdateUser(id int64, UserData *model.Users) error
 }
 
 func init() {

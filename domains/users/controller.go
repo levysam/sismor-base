@@ -2,30 +2,17 @@ package users
 
 import (
 	"fiber-simple-api/domains/sismor/model"
+	"fiber-simple-api/repository"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-var UsersControllerVar usersControllerInterface
-
-func init() {
-	UsersControllerVar = &UsersController{}
-}
-
 type UsersController struct {
-	respository UsersRepositoryInterface
+	respository repository.IBaseRepository
 }
 
-type usersControllerInterface interface {
-	List(ctx *fiber.Ctx) error
-	Detail(ctx *fiber.Ctx) error
-	Insert(ctx *fiber.Ctx) error
-	Delete(ctx *fiber.Ctx) error
-	Update(ctx *fiber.Ctx) error
-}
-
-func NewUsersController(respository UsersRepositoryInterface) *UsersController {
+func NewUsersController(respository repository.IBaseRepository) *UsersController {
 	return &UsersController{
 		respository: respository,
 	}
