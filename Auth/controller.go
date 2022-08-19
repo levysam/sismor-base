@@ -8,34 +8,33 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-var AuthControllerVar authControllerInterface
+var AuthControllerVar AuthControllerInterface
 
 func init() {
 	AuthControllerVar = &AuthController{}
 }
 
 type AuthController struct {
-	respository users.UsersRepositoryInterface
-	response    interface{}
+	repository users.UsersRepositoryInterface
 }
 
-type authControllerInterface interface {
-	Login(c *fiber.Ctx, repository *users.UsersRepository) error
+type AuthControllerInterface interface {
+	Login(c *fiber.Ctx) error
 }
 
-func NewAuthController(respository authControllerInterface) *AuthController {
+func NewAuthController(repository users.UsersRepositoryInterface) *AuthController {
 	return &AuthController{
-		respository: respository,
+		repository: repository,
 	}
 }
 
-func Login(c *fiber.Ctx, repository *users.UsersRepository) error {
+func (controller *AuthController) Login(c *fiber.Ctx) error {
 	loginForm := new(LoginForm)
 	err := c.BodyParser(loginForm)
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
-	user, err := repository.GetUserByEmail(loginForm.Email)
+	user, err := controller.repository.GetUserByEmail(loginForm.Email)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).SendString("Nenhum Usuário encontrado")
 	}

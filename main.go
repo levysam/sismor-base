@@ -38,8 +38,8 @@ func NewApp() *BaseApp {
 func main() {
 	app := NewApp()
 	//app.RouterBase.GetUsersController(app.Database)
-	usersFactory := routes.NewBaseRouterV2("usuarios").Route()
-	authFactory := routes.NewBaseRouterV2("auth").Route()
+	usersFactory := routes.NewBaseRouter("usuarios").Route()
+	authFactory := routes.NewBaseRouter("auth").Route()
 
 	auth := authFactory.MakeRouteProtected(app.Database)
 	auth.ListenRoutes(app.FiberBase)

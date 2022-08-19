@@ -14,8 +14,7 @@ func init() {
 }
 
 type UsersController struct {
-	respository UsersRepositoryInterface
-	response    interface{}
+	repository UsersRepositoryInterface
 }
 
 type usersControllerInterface interface {
@@ -26,20 +25,20 @@ type usersControllerInterface interface {
 	Update(ctx *fiber.Ctx) error
 }
 
-func NewUsersController(respository UsersRepositoryInterface) *UsersController {
+func NewUsersController(repository UsersRepositoryInterface) *UsersController {
 	return &UsersController{
-		respository: respository,
+		repository: repository,
 	}
 }
 
 func (controller *UsersController) List(ctx *fiber.Ctx) error {
 	var err error
-	controller.response, err = controller.respository.GetUsers()
+	response, err := controller.repository.GetUsers()
 	if err != nil {
 		ctx.JSON(err)
 		return err
 	}
-	ctx.JSON(controller.response)
+	ctx.JSON(response)
 	return nil
 }
 
@@ -53,7 +52,7 @@ func (controller *UsersController) Detail(ctx *fiber.Ctx) error {
 		ctx.JSON(err)
 		return err
 	}
-	user, err := controller.respository.GetUser(params.ID)
+	user, err := controller.repository.GetUser(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -69,7 +68,7 @@ func (controller *UsersController) Insert(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
-	err = controller.respository.InsertUser(userToInsert)
+	err = controller.repository.InsertUser(userToInsert)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
@@ -86,7 +85,7 @@ func (controller *UsersController) Delete(ctx *fiber.Ctx) error {
 		ctx.JSON(err)
 		return err
 	}
-	err = controller.respository.DeleteUser(params.ID)
+	err = controller.repository.DeleteUser(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -106,7 +105,7 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 	}
 
 	userData := &model.Users{}
-	// oldUser, err := controller.respository.GetUser(id)
+	// oldUser, err := controller.repository.GetUser(id)
 	if err != nil {
 		ctx.JSON(err)
 		return err
@@ -117,7 +116,7 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	err = controller.respository.UpdateUser(params.ID, userData)
+	err = controller.repository.UpdateUser(params.ID, userData)
 	if err != nil {
 		ctx.JSON(err)
 		return err
