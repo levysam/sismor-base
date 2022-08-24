@@ -1,29 +1,7 @@
 package routes
 
-import (
-	"fiber-simple-api/database"
-	"fiber-simple-api/routes/users"
-)
+import "github.com/gofiber/fiber/v2"
 
 type iBaseRouter interface {
-	MakeRouteProtected(Database *database.Database) users.IProtectedRoute
-	//MakeRoutePublic() iPublicRoute
-}
-
-type BaseRouter struct {
-	route string
-}
-
-func NewBaseRouter(name string) *BaseRouter {
-	return &BaseRouter{route: name}
-}
-
-func (c BaseRouter) Route() iBaseRouter {
-	if c.route == "usuarios" {
-		return &users.Usuarios{}
-	}
-	// if c.route == "health" {
-	// 	return &nike{}
-	// }
-	return nil
+	ListenRoutes(fiber *fiber.App)
 }
