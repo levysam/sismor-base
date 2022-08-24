@@ -1,12 +1,11 @@
 package users
 
 import (
-	"fiber-simple-api/controllers"
 	"github.com/gofiber/fiber/v2"
 )
 
 type UserRoute struct {
-	controller controllers.IBaseController
+	controller *UsersController
 }
 
 func (router *UserRoute) ListenRoutes(fiber *fiber.App) {
