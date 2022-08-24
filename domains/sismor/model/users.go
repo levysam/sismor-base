@@ -13,3 +13,7 @@ type Users struct {
 	Password string
 	Email    string
 }
+
+func (user *Users)GetID() int32 {
+	return user.ID
+}

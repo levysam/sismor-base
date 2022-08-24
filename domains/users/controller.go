@@ -20,7 +20,7 @@ func NewUsersController(respository repository.IBaseRepository) *UsersController
 
 func (controller *UsersController) List(ctx *fiber.Ctx) error {
 	var err error
-	response, err := controller.respository.GetUsers()
+	response, err := controller.respository.Find()
 	if err != nil {
 		ctx.JSON(err)
 		return err
@@ -39,7 +39,7 @@ func (controller *UsersController) Detail(ctx *fiber.Ctx) error {
 		ctx.JSON(err)
 		return err
 	}
-	user, err := controller.respository.GetUser(params.ID)
+	user, err := controller.respository.GetById(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -55,7 +55,7 @@ func (controller *UsersController) Insert(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
-	err = controller.respository.InsertUser(userToInsert)
+	err = controller.respository.Insert(userToInsert)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
@@ -72,7 +72,7 @@ func (controller *UsersController) Delete(ctx *fiber.Ctx) error {
 		ctx.JSON(err)
 		return err
 	}
-	err = controller.respository.DeleteUser(params.ID)
+	err = controller.respository.Delete(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -103,7 +103,7 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	err = controller.respository.UpdateUser(params.ID, userData)
+	err = controller.respository.Update(params.ID, userData)
 	if err != nil {
 		ctx.JSON(err)
 		return err
