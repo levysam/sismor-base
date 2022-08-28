@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fiber-simple-api/database"
-	"fiber-simple-api/domains/users"
+	"fiber-simple-api/domains/users/repository"
 	"fmt"
 	"os"
 
@@ -13,16 +13,22 @@ type repositoryFactory struct {
 	database *database.Database
 }
 
+func NewRepositoryFactory() *repositoryFactory {
+	return &repositoryFactory{
+		database: nil,
+	}
+}
+
 func (factory *repositoryFactory) GetRepository(controllerType string) (IBaseRepository, error) {
 	factory.GetDatabase()
 	if controllerType == "users" {
-		return users.NewUsersRepository(factory.database), nil
+		return repository.NewUsersRepository(factory.database), nil
 	}
 	return nil, fmt.Errorf("wrong controller type passed")
 }
 
 func (factory *repositoryFactory) GetDatabase() {
-	if factory.database == nil {
+	if factory.database != nil {
 		return
 	}
 	godotenv.Load()

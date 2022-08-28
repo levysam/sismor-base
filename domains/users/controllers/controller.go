@@ -1,4 +1,4 @@
-package users
+package controllers
 
 import (
 	"fiber-simple-api/domains/sismor/model"
@@ -9,18 +9,18 @@ import (
 )
 
 type UsersController struct {
-	respository repository.IBaseRepository
+	repository repository.IBaseRepository
 }
 
-func NewUsersController(respository repository.IBaseRepository) *UsersController {
+func NewUsersController(repository repository.IBaseRepository) *UsersController {
 	return &UsersController{
-		respository: respository,
+		repository: repository,
 	}
 }
 
 func (controller *UsersController) List(ctx *fiber.Ctx) error {
 	var err error
-	response, err := controller.respository.Find()
+	response, err := controller.repository.Find()
 	if err != nil {
 		ctx.JSON(err)
 		return err
@@ -39,7 +39,7 @@ func (controller *UsersController) Detail(ctx *fiber.Ctx) error {
 		ctx.JSON(err)
 		return err
 	}
-	user, err := controller.respository.GetById(params.ID)
+	user, err := controller.repository.GetById(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -55,7 +55,7 @@ func (controller *UsersController) Insert(ctx *fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
-	err = controller.respository.Insert(userToInsert)
+	err = controller.repository.Insert(userToInsert)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnprocessableEntity).SendString(err.Error())
 	}
@@ -72,7 +72,7 @@ func (controller *UsersController) Delete(ctx *fiber.Ctx) error {
 		ctx.JSON(err)
 		return err
 	}
-	err = controller.respository.Delete(params.ID)
+	err = controller.repository.Delete(params.ID)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(err)
@@ -92,7 +92,7 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 	}
 
 	userData := &model.Users{}
-	// oldUser, err := controller.respository.GetUser(id)
+	// oldUser, err := controller.repository.GetUser(id)
 	if err != nil {
 		ctx.JSON(err)
 		return err
@@ -103,7 +103,7 @@ func (controller *UsersController) Update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	err = controller.respository.Update(params.ID, userData)
+	err = controller.repository.Update(params.ID, userData)
 	if err != nil {
 		ctx.JSON(err)
 		return err

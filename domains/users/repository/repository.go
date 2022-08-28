@@ -1,9 +1,10 @@
-package users
+package repository
 
 import (
 	"fiber-simple-api/database"
 	"fiber-simple-api/domains/sismor/model"
 	"fiber-simple-api/domains/sismor/table"
+	"fiber-simple-api/models"
 	"fmt"
 
 	"github.com/go-jet/jet/v2/mysql"
@@ -17,11 +18,10 @@ func NewUsersRepository(database *database.Database) *UsersRepository {
 	return &UsersRepository{
 		database: database,
 	}
-
 }
 
-func (repository *UsersRepository) Find() ([]*model.Users, error) {
-	var users []*model.Users
+func (repository *UsersRepository) Find() ([]models.IBaseModel, error) {
+	var users []models.IBaseModel
 
 	rows, err := repository.database.Query(`select id, name, email from users`)
 	if err != nil {
@@ -38,7 +38,7 @@ func (repository *UsersRepository) Find() ([]*model.Users, error) {
 	return users, nil
 }
 
-func (repository *UsersRepository) GetById(Id int64) (*model.Users, error) {
+func (repository *UsersRepository) GetById(Id int64) (models.IBaseModel, error) {
 	user := new(model.Users)
 	err := table.Users.SELECT(table.Users.AllColumns).
 		WHERE(table.Users.ID.EQ(mysql.Int(Id))).
@@ -46,7 +46,7 @@ func (repository *UsersRepository) GetById(Id int64) (*model.Users, error) {
 	return user, err
 }
 
-func (repository *UsersRepository) Insert(user *model.Users) error {
+func (repository *UsersRepository) Insert(user models.IBaseModel) error {
 	_, err := table.Users.
 		INSERT(table.Users.Name, table.Users.Password, table.Users.Email).
 		VALUES(user).
@@ -61,7 +61,7 @@ func (repository *UsersRepository) Delete(Id int64) error {
 	return err
 }
 
-func (repository *UsersRepository) Update(Id int64, UserData *model.Users) error {
+func (repository *UsersRepository) Update(Id int64, UserData models.IBaseModel) error {
 	statement := table.Users.UPDATE(table.Users.MutableColumns).
 		MODEL(UserData).
 		WHERE(table.Users.ID.EQ(mysql.Int(Id)))
@@ -70,7 +70,7 @@ func (repository *UsersRepository) Update(Id int64, UserData *model.Users) error
 	return err
 }
 
-func (repository *UsersRepository) GetUserByEmail(email string) (*model.Users, error) {
+func (repository *UsersRepository) GetUserByEmail(email string) (models.IBaseModel, error) {
 	user := new(model.Users)
 	row := repository.database.QueryRow(`select id, name, email, passwordfrom users where email = ? limit 1`, email)
 	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password)

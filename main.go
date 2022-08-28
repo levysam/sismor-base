@@ -38,10 +38,11 @@ func NewApp() *BaseApp {
 func main() {
 	app := NewApp()
 	//app.RouterBase.GetUsersController(app.Database)
-	usersFactory := routes.NewBaseRouter("usuarios")
-	userRoute := usersFactory.Route()
-	usr := userRoute.MakeRouteProtected(app.Database)
-	usr.ListenRoutes(app.FiberBase)
+	usersFactory, err := routes.GetRoutes("user")
+	if err != nil {
+		log.Fatal(err)
+	}
+	usersFactory.ListenRoutes(app.FiberBase)
 	//printShoeDetails(nikeShoe)
 	log.Fatal(app.FiberBase.Listen(":8080"))
 }

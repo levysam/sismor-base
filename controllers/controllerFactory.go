@@ -1,14 +1,20 @@
 package controllers
 
 import (
-	"fiber-simple-api/domains/users"
+	"fiber-simple-api/domains/users/controllers"
 	"fiber-simple-api/repository"
 	"fmt"
+	"log"
 )
 
-func GetController(controllerType string, repository repository.IBaseRepository) (IBaseController, error) {
+func GetController(controllerType string) (IBaseController, error) {
+	repositoryFactory := repository.NewRepositoryFactory()
+	repository, err := repositoryFactory.GetRepository(controllerType)
+	if err != nil {
+		log.Fatal(err)
+	}
 	if controllerType == "users" {
-		return users.NewUsersController(repository), nil
+		return controllers.NewUsersController(repository), nil
 	}
 	return nil, fmt.Errorf("wrong controller type passed")
 }

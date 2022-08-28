@@ -1,4 +1,4 @@
-package users
+package controllers
 
 // import (
 // 	"fiber-simple-api/domains/sismor/model"
