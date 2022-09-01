@@ -8,8 +8,8 @@ import (
 )
 
 func GetRoutes(routerType string) (iBaseRouter, error) {
-	if routerType == "user" {
-		controller, err := controllers.GetController("users")
+	if routerType == "users" {
+		controller, err := controllers.GetController(routerType)
 		if err != nil {
 			log.Fatal(err)
 		}
