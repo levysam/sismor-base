@@ -9,3 +9,8 @@ type IBaseRepository interface {
 	Delete(Id int64) error
 	Update(Id int64, data models.IBaseModel) error
 }
+
+type IAuthRepository interface {
+	IBaseRepository
+	GetUserByEmail(email string) (models.IBaseModel, error)
+}

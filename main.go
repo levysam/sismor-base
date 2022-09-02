@@ -23,11 +23,13 @@ func NewApp() *BaseApp {
 func main() {
 	app := NewApp()
 	//app.RouterBase.GetUsersController(app.Database)
+	//authFactory, err := auth.NewAuthRoute()
 	usersFactory, err := routes.GetRoutes("users")
 	if err != nil {
 		log.Fatal(err)
 	}
 	usersFactory.ListenRoutes(app.FiberBase)
+	//authFactory.ListenRoutes(app.FiberBase)
 	//printShoeDetails(nikeShoe)
 	log.Fatal(app.FiberBase.Listen(":8080"))
 }

@@ -27,6 +27,11 @@ func (factory *repositoryFactory) GetRepository(controllerType string) (IBaseRep
 	return nil, fmt.Errorf("wrong controller type passed")
 }
 
+func (factory *repositoryFactory) GetRepositoryAuth() (IAuthRepository, error) {
+	factory.GetDatabase()
+	return repository.NewUsersRepository(factory.database), nil
+}
+
 func (factory *repositoryFactory) GetDatabase() {
 	if factory.database != nil {
 		return
